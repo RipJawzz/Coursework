@@ -1,0 +1,57 @@
+#pt1
+sudo yum update -y
+sudo yum install docker docker.io -y
+
+if docker not running
+sudo systemctl unmask docker
+sudo systemctl start docker
+
+sudo usermod -a -G docker ec2-user
+#exit and connect again
+
+docker pull python:3.8-slim 
+
+docker images
+docker run -dit --name=pyContainer python:3.8-slim
+docker container ls
+docker exec -it pyContainer /bin/bash
+	python -c "print('hello world')"
+	python --version
+	ls
+	exit
+docker container stop pyContainer
+docker container rm pyContainer
+mkdir testfolder
+
+pwd  (/home/ec2-user)
+
+sudo docker run -dit --name=pyCont -v /home/ec2-user/testfolder:/myfolder python:3.8-slim
+docker exec -it pyCont /bin/bash
+cd myfolder
+apt-get update
+apt install wget -y
+wget https://awsbucketboi.s3.amazonaws.com/firstpt.py
+apt-get install python -y
+python firstpt.py
+
+#docker restart
+--------------------------------------------------------------------------------
+
+#pt2
+sudo yum update -y
+sudo amazon-linux-extras install docker -y
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+
+#exit and join again
+
+docker pull httpd
+docker run --name=webdoc -d -p 80:80 httpd
+docker exec -it webdoc bash
+cd /usr/local/apache2/htdocs
+apt-get update
+apt install wget -y
+rm index.html
+wget https://awsbucketboi.s3.amazonaws.com/index.html
+
+

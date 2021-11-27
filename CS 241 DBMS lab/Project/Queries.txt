@@ -1,0 +1,28 @@
+a) 
+select locality,address from Rental where rent>=20000 and rent <=40000;
+
+b)
+select reg_no from Rental where rent<=10000 and no_bedrooms >=2 and locality = 'Kanpur';
+select agent.agent_contact,reg_no from Handles_rental NATURAL JOIN agent where reg_no in (select reg_no from Rental where rent<=10000 and no_bedrooms >=2 and locality = 'Kanpur');
+
+c)
+with temp_rel(agent_id, amount) as
+(
+    select agent_id, sum(cost) 
+    from sold natural join property 
+    where selling_date like "%2021"
+    group by agent_id
+)
+select agent_name, max(amount) as total_sum
+from temp_rel natural join agent;
+
+d)
+select reg_no,cost,size,locality,address,no_bedrooms 
+from property 
+where status='avail' and no_bedrooms >=2;
+
+e)
+select * from property where cost = (select max(cost) from property);
+select * from rental where rent = (select max(rent) from rental);
+
+

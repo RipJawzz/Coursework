@@ -1,0 +1,7 @@
+1. done	prod_cons.c prod_cons
+2. done	reader_writer.c reader_writer
+3. done	reader_writer.c reader_writer
+4. done. rw_mod.c   rw_mod
+5. Without the delay the writes and reads become too spontaneous resulting in some readers missing out on some writes.
+6.	Given an appropriate delay time, no reader will startve in this implementation because each reader get a chance to apply 
+	read lock and will get its required read operations corresponding to the write.

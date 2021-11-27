@@ -1,0 +1,5 @@
+Department_Id Department_Name Budget
+D001	      CSE	      100000
+D002	      ECE	      50000
+D003          HSS	      10000
+D004          Maths	      25000

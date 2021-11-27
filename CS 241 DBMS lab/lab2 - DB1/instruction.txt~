@@ -1,0 +1,7 @@
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/-?-.txt' INTO TABLE -?- Columns terminated by ',';
+systemctl stop mysql 
+systemctl start mysql
+sudo mysql --local-infile=1 -u root -p
+set global local_infile=true;
+
+

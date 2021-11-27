@@ -1,0 +1,148 @@
+create database db_re;
+use db_re;
+create table Agent(
+	agent_id integer(5) primary key,
+	agent_name varchar(30) not null,
+	agent_contact varchar(10)
+	);
+create table Property(
+	reg_no integer(5) primary key,
+	cost integer(10),
+	status varchar(5),
+	locality varchar(20),
+	size integer(5),
+	no_bedrooms integer(2),
+	address varchar(30)
+	);
+create table Rental(
+	reg_no integer(5) primary key,
+	rent integer(10),
+	status varchar(5),
+	locality varchar(20),
+	size integer(5),
+	no_bedrooms integer(2),
+	address varchar(30)
+	);
+create table Handles_property(
+	agent_id integer(5),
+	reg_no integer(5),
+	foreign key(agent_id) references Agent(agent_id),
+	foreign key(reg_no) references Property(reg_no),
+	primary key(agent_id,reg_no)
+	);
+create table Handles_rental(
+	agent_id integer(5),
+	reg_no integer(5),
+	foreign key(agent_id) references Agent(agent_id),
+	foreign key(reg_no) references Rental(reg_no),
+	primary key(agent_id,reg_no)
+	);
+create table Sold(
+	agent_id integer(5),
+	reg_no integer(5),
+	selling_date varchar(10),
+	foreign key(agent_id) references Agent(agent_id),
+	foreign key(reg_no) references Property(reg_no),
+	primary key(agent_id,reg_no,selling_date)
+	);
+create table Rented(
+	agent_id integer(5),
+	reg_no integer(5),
+	start_date varchar(10),
+	end_date varchar(10),
+	foreign key(agent_id) references Agent(agent_id),
+	foreign key(reg_no) references rental(reg_no),
+	primary key(agent_id,reg_no,start_date)
+	);
+
+insert into agent values
+('21011','Ishan Acharyya','9099900001'),
+('21012','Pladimir Vutin','9872019840'),
+('21013','Jim Kong Un','9823489200'),
+('21014','Melena Nomez','9099900002'),
+('21015','Binendra Sodi','9099900003');
+
+insert into property values
+('21041','1400000','avail','Ranjhi','350','1','A5 Rajul Complex'),
+('21042','1500000','avail','Gorakpur','300','1','22a Bahadur Colony'),
+('21043','2400000','avail','Gorakpur','550','2','22b Bahadur Colony'),
+('21044','2600000','avail','Ranjhi','650','2','232 Kailash Residency'),
+('21045','2400000','avail','Ranjhi','700','2','D31 Rajul Complex'),
+('21046','2700000','avail','Gorakpur','750','2','202 Shainaz Builders'),
+('21047','3500000','avail','Ranjhi','1300','3','315 Kailash Residency'),
+('21048','3700000','avail','Gorakpur','1400','3','3c Kailash enclave'),
+('21049','4500000','avail','Anantara Housing','1500','3','T3 414'),
+('21050','6500000','avail','Gorakpur','2500','4','411 Shainaz Builders'),
+('21051','6500000','avail','Gorakpur','2500','4','441 Shainaz Builders'),
+('21052','16000000','avail','Elanza Enclave','2500','4','flat 1r'),
+('21053','10000000','avail','Gorakpur','2700','4','4A Shainaz Builders'),
+('21054','19500000','avail','Anantara Housing','3000','4','40a'),
+('21055','450000000','avail','Anantara Housing','5000','6','65b'),
+('21056','500000000','avail','Gorakpur','5300','6','6B Shainaz Builders'),
+('21057','450000000','avail','Anantara Housing','5000','6','63c'),
+('21058','600000000','avail','Anantara Housing','5700','9','901'),
+('21059','650000000','avail','Elanza Enclave','6000','10','villa 200'),
+('21060','1995800000','avail','Elanza Enclave','11000','20','Acharyya Villa');
+
+insert into rental values
+('21141','4500','avail','Ranjhi','350','2','101 Kailash Residency'),
+('21142','5000','avail','Ranjhi','350','2','A6 Rajul Complex'),
+('21143','6500','avail','Gorakpur','340','2','104 Shainaz Builders'),
+('21144','8000','avail','Gorakpur','300','2','21a Bahadur Colony'),
+('21145','12000','avail','Gorakpur','350','2','1e Kailash enclave'),
+('21146','15000','avail','Gorakpur','650','3','2r Kailash enclave'),
+('21147','17000','avail','Ranjhi','670','3','204 Kailash Residency'),
+('21148','19500','avail','Ranjhi','700','3','205 Kailash Residency'),
+('21149','37000','avail','Ranjhi','700','3','B22 Rajul Complex'),
+('21150','39000','avail','Gorakpur','1400','3','300 Shainaz Builders'),
+('21151','45000','avail','Anantara Housing','1500','3','T5 202'),
+('21152','45000','avail','Anantara Housing','1500','3','T5 203'),
+('21153','60000','avail','Elanza Enclave','2500','4','flat 2f'),
+('21154','65000','avail','Gorakpur','2500','4','414 Shainaz Builders'),
+('21155','85000','avail','Gorakpur','2700','4','4N Shainaz Builders'),
+('21156','85000','avail','Gorakpur','2700','4','4M Shainaz Builders'),
+('21157','65000','avail','Anantara Housing','3000','4','41b'),
+('21158','65000','avail','Anantara Housing','3000','4','41e'),
+('21159','125000','avail','Elanza Enclave','6000','10','villa 201'),
+('21160','3000000','avail','Elanza Enclave','8500','15','villa 307');
+
+insert into handles_property values
+('21011','21060'),
+('21011','21059'),
+('21011','21058'),
+('21012','21047'),
+('21013','21046'),
+('21013','21042'),
+('21015','21051');
+
+insert into handles_rental values
+('21011','21160'),
+('21011','21159'),
+('21012','21144'),
+('21014','21148'),
+('21014','21142'),
+('21015','21148');
+
+insert into sold values
+('21011','21060','12/12/2020'),
+('21011','21059','22/08/2001'),
+('21013','21042','23/09/2012');
+
+insert into rented values
+('21011','21160','01/01/2000','12/12/2021'),
+('21012','21144','23/10/2009','01/03/2014'),
+('21015','21148','12/12/2000','01/01/2002');
+
+update property
+set status='taken'
+where reg_no in (
+	select reg_no
+	from sold
+);
+
+update rental
+set status='taken'
+where reg_no in (
+	select reg_no
+	from rented
+);

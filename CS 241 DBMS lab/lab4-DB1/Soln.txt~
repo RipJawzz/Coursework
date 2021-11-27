@@ -1,0 +1,140 @@
+CREATE DATABASE lab;
+use lab;
+create table student(
+	snum integer(9) primary key,
+	sname varchar(30),
+	major varchar(25),
+	standing varchar(2),
+	age integer(3)
+	);
+create table faculty(
+	fid integer(9),
+	fname varchar(30),
+	deptid integer(2),
+	primary key(fid)
+	);
+create table class(
+	cname varchar(40) primary key,
+	meets_at varchar(20),
+	room varchar(10),
+	fid integer(9),
+	foreign key(fid) references faculty(fid)
+	);
+create table enrolled(
+	snum integer(9),
+	cname varchar(40),
+	primary key(snum,cname),
+	foreign key(snum) references student(snum),
+	foreign key(cname) references class(cname)
+	);
+	
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/student.txt' INTO TABLE student Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/faculty.txt' INTO TABLE faculty Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/class.txt' INTO TABLE class Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/enrolled.txt' INTO TABLE enrolled Columns terminated by ',';
+
+1)
+
+SELECT sname,age
+FROM ((student natural join enrolled) natural join class) natural join faculty
+WHERE major="Finance" OR fname="Linda Davis" and age>=all(
+SELECT age
+FROM ((student natural join enrolled) natural join class) natural join faculty
+WHERE major="Finance" OR fname="Linda Davis"
+);
+
+2)
+
+SELECT DISTINCT cname
+FROM(
+(
+SELECT cname
+FROM class
+WHERE meets_at="20 AVW"
+)
+union
+(
+SELECT cname
+FROM enrolled
+GROUP BY cname
+having count(snum)>=5
+)
+)as T1;
+
+3)
+
+SELECT fname
+FROM faculty natural join class
+GROUP BY fid
+HAVING count(cname)=(
+SELECT count(DISTINCT room)
+FROM class);
+
+4)
+
+SELECT fname,count(cname) as num_courses
+FROM faculty natural join class
+GROUP BY fid
+HAVING COUNT(cname)>=all(
+SELECT count(cname)
+FROM faculty natural join class
+GROUP BY fid
+);
+
+5)
+
+SELECT fname
+FROM faculty
+WHERE fname not in(
+SELECT DISTINCT fname
+FROM faculty natural join class
+);
+
+6)
+
+select s1.age, s1.standing
+from student as s1 
+group by s1.age, s1.standing 
+having s1.standing in (select s2.standing
+from student s2
+where s1.age = s2.age
+group by s2.age, s2.standing
+having count(*) >= all (select count(*)
+from student s3
+where s3.age = s2.age
+group by s3.age, s3.standing));
+
+7)
+
+SELECT room,count(cname)
+FROM class
+GROUP BY room;
+
+8)
+
+SELECT DISTINCT cname
+FROM class natural join enrolled
+WHERE room="R128";
+
+9)
+
+SELECT cname,meets_at
+FROM class
+where cname in
+(
+SELECT cname
+FROM enrolled
+GROUP BY cname
+HAVING count(snum)>=1
+);
+
+10)
+
+SELECT DISTINCT sname
+FROM student natural join enrolled
+WHERE standing="JR" and cname in
+(
+SELECT DISTINCT cname
+FROM class
+WHERE room="R128"
+);

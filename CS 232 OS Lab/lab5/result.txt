@@ -1,0 +1,34 @@
+For testing webserver_dynamic:
+	To initialize a server use the following command in /home/ishan_acharyya/lab5/web_server
+	./webserver_dynamic 7077
+
+	The following command will initialize a client 'A' that will copy all webdocs to /home/ishan_acharyya/lab5/test/test1
+	wget -P test1 -nd -p localhost:7077/index.html
+
+	The following command will initialize a client 'B' that will copy all webdocs to /home/ishan_acharyya/lab5/test/test2
+	wget -P test2 -nd -p localhost:7077/index.html
+
+1)Ensure that test1 and test 2 are empty
+2)Initialize server
+3)Initialize A
+	After it finishes, we can verify the files in test1 and see the data provided in the terminal running A
+Result in my run:-
+Total wall clock time: 25s
+Downloaded: 21 files, 3.3M in 25s
+4)Clear test1
+5)Run Step 3 for A and B simultaneously with minimum delay
+ After it finishes, we will notice:
+Result in my run:-
+For A:
+Total wall clock time: 25s
+Downloaded: 21 files, 3.3M in 25s
+For B:
+Total wall clock time: 25s
+Downloaded: 21 files, 3.3M in 25s
+
+We can see that the data is transferred as intended 
+and the max time taken in step 5 is 25 s, which ic less than step 2 time *2 [50 s] had it been a single threaded server serving two clients
+
+
+
+	

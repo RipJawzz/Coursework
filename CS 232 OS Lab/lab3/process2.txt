@@ -1,0 +1,10 @@
+Doom	2 10
+GTA	4 11
+FarCry	30 4
+Forza_Horizon	35 20
+CSGO	37 12
+Rocket_League 45 4
+Skyrim	60 20
+SuperHot 80 2
+Assassins_Creed 85 10
+

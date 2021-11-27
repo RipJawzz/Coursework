@@ -1,0 +1,79 @@
+FCFS- First Come First Serve
+RR- Round Robin
+SRBF- Shortest Remaining Burst First
+*Context Switching time=0
+Process table:-
+P0 0 3
+P1 1 6
+P2 5 4
+P3 7 3
+
+FCFS:-
+[0 - 3] - P0 running
+[3 - 9] - P1 running
+[9 - 13] - P2 running
+[13 - 16] - P3 running
+
+
+Turnaround times:   P0[3], P1[8], P2[8], P3[9]
+Wait times:         P0[0], P1[2], P2[4], P3[6]
+
+Avg turnaround=7.000000
+Avg wait=3.000000
+
+RR with time quantum = 2:-
+[0 - 2] - P0 running
+[2 - 4] - P1 running
+[4 - 5] - P0 running
+[5 - 7] - P1 running
+[7 - 9] - P2 running
+[9 - 11] - P3 running
+[11 - 13] - P1 running
+[13 - 15] - P2 running
+[15 - 16] - P3 running
+
+
+Turnaround times:   P0[5], P1[12], P2[10], P3[9]
+Wait times:         P0[2], P1[6], P2[6], P3[6]
+
+Avg turnaround=9.000000
+Avg wait=5.000000
+
+SRBF:-
+[0 - 3] - P0
+[3 - 9] - P1
+[9 - 12] - P3
+[12 - 16] - P2
+
+
+Turnaround times:   P0[3], P1[8], P2[11], P3[5]
+Wait times:         P0[0], P1[2], P2[7], P3[2]
+
+Avg turnaround=6.750000
+Avg wait=2.750000
+
+--------------------------------------------------------
+The following observations have been made:-
+
+Average turnaround time:-
+	SRBF<FCFS<RR
+
+Average wait time:-
+	SRBF<FCFS<RR
+
+From this we can infer the performance of the scheduling algoritms as:
+	SRBF<FCFS<RR
+
+---------------------------------------------------------
+In process2.txt, which has a lot of process and situations where we get cpu ideal time, we get the result:-
+[Round robin time quantum = 15]
+Average turnaround time:-
+	SRBF<FCFS=RR
+Average wait time:-
+	SRBF<FCFS<RR
+
+Here also SJF is superior
+
+In all other input files we observe
+	SRBF<FCFS<=RR
+	for avg turnaround times and avg wait times

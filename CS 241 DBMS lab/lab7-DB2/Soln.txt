@@ -1,0 +1,71 @@
+CREATE DATABASE DB2;
+use DB2;
+create table student(
+	snum integer(9) primary key,
+	sname varchar(30),
+	major varchar(25),
+	standing varchar(2),
+	age integer(3)
+	);
+create table faculty(
+	fid integer(9),
+	fname varchar(30),
+	deptid integer(2),
+	primary key(fid)
+	);
+create table class(
+	cname varchar(40) primary key,
+	meets_at varchar(20),
+	room varchar(10),
+	fid integer(9),
+	foreign key(fid) references faculty(fid)
+	);
+create table enrolled(
+	snum integer(9),
+	cname varchar(40),
+	grade varchar(1),
+	primary key(snum,cname),
+	foreign key(snum) references student(snum),
+	foreign key(cname) references class(cname)
+	);
+	
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/student.txt' INTO TABLE student Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/faculty.txt' INTO TABLE faculty Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/class.txt' INTO TABLE class Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/enrolled.txt' INTO TABLE enrolled Columns terminated by ',';
+
+1)
+	delimiter //
+	CREATE FUNCTION countStudent(facultyName VARCHAR(40),courseName VARCHAR(60)) 
+	RETURNS int DETERMINISTIC 
+	begin 
+	declare sCount int; 
+		SELECT COUNT(snum) into sCount 
+		FROM Enrolled,Faculty,Class 
+		WHERE Enrolled.cname= Class.cname AND Class.fid = Faculty.fid AND Class.cname = courseName AND fname = facultyName;  
+		return scount; 
+		end//
+	delimiter ;
+
+	SELECT fname    
+	  FROM Faculty natural join Class    
+	  WHERE Faculty.fid = Class.fid   
+	  GROUP BY fname 
+	  HAVING SUM(countStudent(fname,cname)) > 1;
+
+2)
+	delimiter //
+	Create Function failCount(courseName VARCHAR(60)) 
+	 returns INT DETERMINISTIC 
+	 begin 
+	 	DECLARE gCount int; 
+	 	Select COUNT(snum) into gcount
+	 	FROM Enrolled 
+	 	WHERE cname = courseName AND grade = 'F'; 
+	 	return gCount; 
+	 end//
+	delimiter ;
+
+	Select fname, cname 
+	 FROM Faculty natural join class
+	 WHERE Faculty.fid= Class.fid AND failCount(cname) >1;

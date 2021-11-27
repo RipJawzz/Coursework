@@ -1,0 +1,5 @@
+ls
+mkdir mkdir2temp
+cd mkdir2temp
+chmod 555 myfile
+cat > myfile

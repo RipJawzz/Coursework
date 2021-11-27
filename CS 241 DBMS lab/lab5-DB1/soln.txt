@@ -1,0 +1,75 @@
+CREATE DATABASE DB1;
+use DB1;
+create table student(
+	snum integer(9) primary key,
+	sname varchar(30),
+	major varchar(25),
+	standing varchar(2),
+	age integer(3)
+	);
+create table faculty(
+	fid integer(9),
+	fname varchar(30),
+	deptid integer(2),
+	primary key(fid)
+	);
+create table class(
+	cname varchar(40) primary key,
+	meets_at varchar(20),
+	room varchar(10),
+	fid integer(9),
+	foreign key(fid) references faculty(fid)
+	);
+create table enrolled(
+	snum integer(9),
+	cname varchar(40),
+	primary key(snum,cname),
+	foreign key(snum) references student(snum),
+	foreign key(cname) references class(cname)
+	);
+	
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/student.txt' INTO TABLE student Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/faculty.txt' INTO TABLE faculty Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/class.txt' INTO TABLE class Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/enrolled.txt' INTO TABLE enrolled Columns terminated by ',';
+
+
+1)
+
+SELECT DISTINCT snum,sname
+FROM student
+WHERE age>=18 AND standing="SR" AND NOT major='Electrical Engineering' AND NOT major='Mechanical Engineering' AND NOT major='Computer Engineering' AND NOT major='Civil Engineering';
+
+2)
+
+SELECT cname
+FROM class
+WHERE cname NOT IN(
+SELECT cname
+FROM enrolled
+);
+
+3)
+SELECT DISTINCT snum,sname
+FROM ((student NATURAL JOIN enrolled) NATURAL JOIN class)NATURAL JOIN faculty 
+WHERE fid IN
+(
+SELECT fid
+FROM ((enrolled) NATURAL JOIN class)NATURAL JOIN faculty 
+GROUP BY fid
+HAVING count(snum)<5);
+
+4)
+
+SELECT fid,fname,COUNT(cname) as number_of_classes
+FROM faculty NATURAL LEFT OUTER JOIN class
+GROUP BY fid,fname;
+
+5)
+
+SELECT cname,room,count(snum)as number_enrolled
+FROM class NATURAL LEFT OUTER JOIN enrolled
+GROUP BY cname,room;
+
+
+

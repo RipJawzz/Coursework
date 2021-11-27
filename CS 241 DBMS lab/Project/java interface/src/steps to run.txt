@@ -1,0 +1,9 @@
+1) change password connection, username and database name in :
+	line 6,27 in DBcons.SQL_Updates
+	line 69 (not intended) in RE_Office
+
+2)run and compile DB_interface
+
+3)make sure mysql server is running
+
+4)watch the marks roll in

@@ -1,0 +1,11 @@
+rm -r q1Output
+rm -r q2Output
+rm -r q3Output
+rm -r q4Output
+1. hadoop jar /home/rip_jawzz/hadoop/hadoop-3.3.0/share/hadoop/tools/lib/hadoop-streaming-*.jar -input big.txt -output q1Output -mapper "q1/mapper.py" -reducer "q1/reducer.py"
+2. hadoop jar /home/rip_jawzz/hadoop/hadoop-3.3.0/share/hadoop/tools/lib/hadoop-streaming-*.jar -input big.txt -output q2Output -mapper "q2/mapper.py" -reducer "q2/reducer.py"
+3. hadoop jar /home/rip_jawzz/hadoop/hadoop-3.3.0/share/hadoop/tools/lib/hadoop-streaming-*.jar -input big.txt -output q3Output -mapper "q3/mapper.py" -combiner "q3/combiner.py" -reducer "q3/reducer.py"
+4. hadoop jar /home/rip_jawzz/hadoop/hadoop-3.3.0/share/hadoop/tools/lib/hadoop-streaming-*.jar -input big.txt -output q4Output -mapper "q4/mapper.py" -reducer "q4/reducer.py"
+
+
+

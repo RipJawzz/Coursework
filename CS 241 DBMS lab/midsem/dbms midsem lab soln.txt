@@ -1,0 +1,68 @@
+create database midsem;
+use midsem;
+create table employees(
+	person_name varchar(40),
+	person_id integer(6) primary key,
+	supervisor_name varchar(40)
+);
+create table account(
+	person_name varchar(40),
+	city varchar(20),
+	No_distributors integer(3),
+	primary key(person_name,city)
+);
+
+
+
+insert into employees
+values
+('R',2021001,'A'),
+('A',2021002,'Ishan'),
+('Ishan',1901077,'M'),
+('M',2021004,null),
+('X',2021007,null);
+
+insert into account
+values
+('R','Hyderabad',10),
+('M','Chennai',5),
+('A','Kolkata',4),
+('Ishan','Guwahati',4);
+
+1)
+select *
+from employees;
+
+2)
+select *
+from account;
+
+3)
+select person_name, person_id
+from employees
+where person_name in(
+	select supervisor_name
+	from employees
+	where person_name="A"
+);
+
+4)
+select person_name, person_id
+from employees
+where person_name in(
+	select supervisor_name
+	from employees
+	where person_name="R"
+
+5)
+select person_name,person_id
+from account natural join employees
+where person_name <> "Ishan"
+group by person_name, person_id
+having sum(no_distributors)= 
+(
+	select sum(no_distributors)
+	from account
+	group by person_name
+	having person_name="Ishan"
+);

@@ -1,0 +1,6 @@
+aws_access_key_id=''
+aws_secret_access_key= ''
+aws_session_token=''
+ami_ID='ami-0c2b8ca1dad447f8a'
+key_name='AWS-Boi'
+sg='sg-03747b9a6acb02278'

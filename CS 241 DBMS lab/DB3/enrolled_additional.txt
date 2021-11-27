@@ -1,0 +1,5 @@
+insert into enrolled 
+values 
+(651135594,'Intoduction to Computing','F'), 
+(660839454,'Programming in C','A'), 
+(699354544,'Programming in C Lab',null);

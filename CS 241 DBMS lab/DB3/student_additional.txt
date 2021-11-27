@@ -1,0 +1,5 @@
+insert into student(snum,sname,major,standing,age)
+values
+(651135594,'Mary White','English','SR',21),
+(660839454,'Charlie Harris','Architecture','SR',22),
+(699354544,'Susie Martin','Law','JR',20);

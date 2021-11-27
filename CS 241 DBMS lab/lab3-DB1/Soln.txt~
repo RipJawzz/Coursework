@@ -1,0 +1,129 @@
+CREATE DATABASE college;
+use college;
+create table student(
+	snum integer(9) primary key,
+	sname varchar(30),
+	major varchar(25),
+	standing varchar(2),
+	age integer(3)
+	);
+create table faculty(
+	fid integer(9),
+	fname varchar(30),
+	deptid integer(2),
+	primary key(fid)
+	);
+create table class(
+	name varchar(40) primary key,
+	meets_at varchar(20),
+	room varchar(10),
+	fid integer(9),
+	foreign key(fid) references faculty(fid)
+	);
+create table enrolled(
+	snum integer(9),
+	cname varchar(40),
+	primary key(snum,cname),
+	foreign key(snum) references student(snum),
+	foreign key(cname) references class(name)
+	);
+	
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/student.txt' INTO TABLE student Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/faculty.txt' INTO TABLE faculty Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/class.txt' INTO TABLE class Columns terminated by ',';
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/enrolled.txt' INTO TABLE enrolled Columns terminated by ',';
+
+1)
+select standing, avg(age) as avg_age
+from student
+group by standing;
+
+2)
+select standing, avg(age) as avg_age
+from student
+where standing != "SR"
+group by standing;
+
+3)
+select distinct fname,count(fid) as tot_classes
+from class natural join faculty
+group by fid;
+		
+4)
+
+select sname
+from student natural join enrolled
+where cname="Database Systems"
+and sname not in(
+select sname
+from student natural join enrolled
+where cname="Operating System design"
+);
+
+5)
+select cname,avg(age) as avg_age
+from enrolled natural join student
+group by cname
+having count(snum)>1;
+
+6)
+select fid
+from faculty natural join class fid
+group by fid
+having count(fid)>1;
+
+7)
+select snum
+from student natural join enrolled
+group by snum
+having count(snum)>1;
+
+8)
+select snum,sname,major,standing,age
+from student
+order by age DESC;
+
+9)
+select sname,snum
+from student as T
+where T.major="Electrical Engineering" or T.major="Mechanical Engineering" or T.major="Computer Engineering" or T.major="Civil Engineering";
+
+10)
+select major,count(major)
+from student as T
+where T.major="Electrical Engineering" or T.major="Mechanical Engineering" or T.major="Computer Engineering" or T.major="Civil Engineering"
+group by major;
+
+11)
+select fname,fid
+from faculty natural join class as T
+where T.name="Communication Networks" or
+T.name="Introduction to Math";
+
+12)
+select fname,fid
+from faculty
+where deptid=68 and fid in(
+	select fid
+	from class
+);
+
+13)
+select sname,snum
+from student
+where snum not in(
+select snum
+from enrolled
+);
+
+14)
+select age, sname
+from student
+where sname like "% W%" and sname like "___%";
+
+15)
+select standing, min(age)
+from student
+where age>=18
+group by standing
+having count(sname)>1;
